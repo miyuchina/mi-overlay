@@ -86,6 +86,6 @@ pkg_postinst() {
 
 	ewarn "Remember to enable agentty-* services, for example:"
 	ewarn
-	ewarn "ln -snf ${EROOT}etc/sv/agentty-tty1 ${EROOT}var/service"
+	ewarn "ln -snf ${EROOT}etc/sv/agetty-tty1 ${EROOT}var/service/"
 	ewarn
 }
