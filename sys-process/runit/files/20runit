@@ -1,0 +1,3 @@
+# vim: filetype=gentoo-env-d:
+# /etc/env.d/20runit
+SVDIR="/var/service/"

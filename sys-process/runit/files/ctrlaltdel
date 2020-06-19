@@ -1,0 +1,8 @@
+#!/bin/sh
+
+PATH=/bin:/usr/bin
+MSG="System is going down..."
+
+touch /etc/runit/stopit
+chmod 100 /etc/runit/stopit
+echo "$MSG" | wall
