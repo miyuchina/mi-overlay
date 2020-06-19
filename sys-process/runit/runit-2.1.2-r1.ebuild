@@ -1,7 +1,7 @@
 # Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 inherit toolchain-funcs flag-o-matic
 
@@ -37,7 +37,7 @@ src_install() {
 	into /
 	dobin $(<../package/commands)
 	dodir /sbin
-	mv "${ED}"/bin/{runit-init,runit,utmpset} "${ED}"/sbin/ || die "dosbin"
+	mv "${ED}"/bin/{runit-init,runit,utmpset} "${ED}/sbin/" || die "dosbin"
 
 	DOCS=( ../package/{CHANGES,README,THANKS,TODO} )
 	HTML_DOCS=( ../doc/*.html )
@@ -56,11 +56,7 @@ src_install() {
 	doexe "${FILESDIR}/3"
 
 	# install default services
-	dodir /etc/sv
-	insinto /etc/sv
-	for service in $(ls "${FILESDIR}/services"); do
-		doins -r "${FILESDIR}/services/${service}"
-	done
+	cp -r "${FILESDIR}/services" "${ED}/etc/sv"
 
 	# set default SVDIR
 	insinto /etc/env.d
@@ -79,13 +75,13 @@ pkg_postinst() {
 	ewarn "source /etc/profile"
 	ewarn
 
-	ewarn "This version of runit still uses ${EROOT}var/service"
+	ewarn "This version of runit still uses ${EROOT}/var/service"
 	ewarn "as the current service directory, as opposed to"
-	ewarn "${EROOT}etc/serivce"
+	ewarn "${EROOT}/etc/serivce"
 	ewarn
 
 	ewarn "Remember to enable agentty-* services, for example:"
 	ewarn
-	ewarn "ln -snf ${EROOT}etc/sv/agetty-tty1 ${EROOT}var/service/"
+	ewarn "ln -snf ${EROOT}/etc/sv/agetty-tty1 ${EROOT}/var/service/"
 	ewarn
 }
