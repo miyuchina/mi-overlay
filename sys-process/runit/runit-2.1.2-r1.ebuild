@@ -44,28 +44,15 @@ src_install() {
 	einstalldocs
 	doman ../man/*.[18]
 
-	# install default scripts
-	dodir /etc/runit
-	insinto /etc/runit
-	doins "${FILESDIR}/functions"
-	doins -r "${FILESDIR}/core-services"
-	exeinto /etc/runit
-	doexe "${FILESDIR}/ctrlaltdel"
-	doexe "${FILESDIR}/1"
-	doexe "${FILESDIR}/2"
-	doexe "${FILESDIR}/3"
-
-	# install default services
-	cp -r "${FILESDIR}/services" "${ED}/etc/sv"
-
-	# set default SVDIR
-	insinto /etc/env.d
-	doins "${FILESDIR}/20runit"
-
-	# setup default runlevel
+	# default runlevel
 	dodir "/etc/runit/runsvdir/default" || die
 	dosym "default" "/etc/runit/runsvdir/current" || die
 	dosym "../etc/runit/runsvdir/current" "/var/service" || die
+
+	# default SVDIR
+	dodir "/etc/sv"
+	insinto "/etc/env.d"
+	doins "${FILESDIR}/20runit"
 }
 
 pkg_postinst() {
@@ -80,8 +67,9 @@ pkg_postinst() {
 	ewarn "${EROOT}/etc/serivce"
 	ewarn
 
-	ewarn "Remember to enable agentty-* services, for example:"
-	ewarn
-	ewarn "ln -snf ${EROOT}/etc/sv/agetty-tty1 ${EROOT}/var/service/"
+	ewarn "Unlike Gentoo's official runit distribution,"
+	ewarn "no default services or bootup scripts have been installed."
+	ewarn "Create services in /etc/sv, and symlink them to /var/service."
+	ewarn "You are on your own."
 	ewarn
 }
